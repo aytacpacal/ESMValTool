@@ -95,6 +95,7 @@ def run_my_diagnostic(cfg):
         string; runs the user diagnostic
 
     """
+    print(cfg)
     # assemble the data dictionary keyed by dataset name
     # this makes use of the handy group_metadata function that
     # orders the data by 'dataset'; the resulting dictionary is
