@@ -66,6 +66,16 @@ def _plot_time_series(cfg, cube, dataset):
     # no need to brag :)
     return 'I made some plots!'
 
+def dict_print(d):
+    for k, v in d.items():
+        if isinstance(v, dict):
+            print("\n\n")
+            print(k)
+            dict_print(v)
+        else:
+            print(k, " : ", v)
+        
+    
 
 def run_my_diagnostic(cfg):
     """
@@ -101,7 +111,10 @@ def run_my_diagnostic(cfg):
     # keyed on datasets e.g. dict = {'MPI-ESM-LR': [var1, var2...]}
     # where var1, var2 are dicts holding all needed information per variable
     my_files_dict = group_metadata(cfg['input_data'].values(), 'dataset')
-    print(cfg)
+    
+    print("\n\n\n\n PRINT START")
+    dict_print(cfg)
+    print("PRINT END \n\n\n\n ")
     # iterate over key(dataset) and values(list of vars)
     for key, value in my_files_dict.items():
         # load the cube from data files only
