@@ -60,7 +60,7 @@ datasets:
 #  - {dataset: ERA-Interim, project: OBS6, type: reanaly, version: 1, start_year: 1981, end_year: 2000, tier: 3}
   
   - {dataset: MIROC-ESM, project: CMIP5, exp: historical,  ensemble: r1i1p1, start_year: 1990, end_year: 1991}
-  - {dataset: EC-EARTH, project: CMIP5, exp: historical,  ensemble: r1i1p1, start_year: 1990, end_year: 1991}
+#  - {dataset: EC-EARTH, project: CMIP5, exp: historical,  ensemble: r1i1p1, start_year: 1990, end_year: 1991}
   
   - {dataset: ERA-Interim, project: OBS6, type: reanaly, version: 1, start_year: 1990, end_year: 1991, tier: 3}
 

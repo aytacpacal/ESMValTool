@@ -1,0 +1,109 @@
+Script started on Fri 19 Feb 2021 02:55:38 PM CET
+[?1034h(base) bash-4.1$ pwd
+/pf/b/b309178/work/ESMValTool_2
+(base) bash-4.1$ conda actiavte [K[K[K[K[Kvate esmca[K[Kvaltool2
+(esmvaltool2) bash-4.1$ git switch master[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kesmva[K[K[K[K[Kgit status
+On branch irisEE
+Your branch is up to date with 'origin/irisEE'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	[31mterminal[m
+
+nothing added to commit but untracked files present (use "git add" to track)
+(esmvaltool2) bash-4.1$ git s[K[K[K[K[Kesmvaltoool[K[Kl
+ERROR:esmvalcore._main:Program terminated abnormally, see stack trace below for more information:
+Traceback (most recent call last):
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/pkg_resources/__init__.py", line 2480, in resolve
+    return functools.reduce(getattr, self.attrs, module)
+AttributeError: module 'esmvaltool.utils.color_tables.show_color_tables' has no attribute 'ColorTables'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/esmvalcore/_main.py", line 435, in run
+    fire.Fire(ESMValTool())
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/esmvalcore/_main.py", line 296, in __init__
+    self.__setattr__(entry_point.name, entry_point.load()())
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/pkg_resources/__init__.py", line 2472, in load
+    return self.resolve()
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/pkg_resources/__init__.py", line 2482, in resolve
+    raise ImportError(str(exc)) from exc
+ImportError: module 'esmvaltool.utils.color_tables.show_color_tables' has no attribute 'ColorTables'
+(esmvaltool2) bash-4.1$ esmvaltool --info
+ERROR:esmvalcore._main:Program terminated abnormally, see stack trace below for more information:
+Traceback (most recent call last):
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/pkg_resources/__init__.py", line 2480, in resolve
+    return functools.reduce(getattr, self.attrs, module)
+AttributeError: module 'esmvaltool.utils.color_tables.show_color_tables' has no attribute 'ColorTables'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/esmvalcore/_main.py", line 435, in run
+    fire.Fire(ESMValTool())
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/esmvalcore/_main.py", line 296, in __init__
+    self.__setattr__(entry_point.name, entry_point.load()())
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/pkg_resources/__init__.py", line 2472, in load
+    return self.resolve()
+  File "/pf/b/b309178/work/miniconda3/envs/esmvaltool2/lib/python3.9/site-packages/pkg_resources/__init__.py", line 2482, in resolve
+    raise ImportError(str(exc)) from exc
+ImportError: module 'esmvaltool.utils.color_tables.show_color_tables' has no attribute 'ColorTables'
+(esmvaltool2) bash-4.1$ git swith[Kch master
+Updating files:  71% (328/458)Updating files:  72% (330/458)Updating files:  73% (335/458)Updating files:  74% (339/458)Updating files:  75% (344/458)Updating files:  76% (349/458)Updating files:  77% (353/458)Updating files:  78% (358/458)Updating files:  79% (362/458)Updating files:  80% (367/458)Updating files:  81% (371/458)Updating files:  82% (376/458)Updating files:  83% (381/458)Updating files:  84% (385/458)Updating files:  85% (390/458)Updating files:  86% (394/458)Updating files:  87% (399/458)Updating files:  88% (404/458)Updating files:  89% (408/458)Updating files:  90% (413/458)Updating files:  91% (417/458)Updating files:  92% (422/458)Updating files:  93% (426/458)Updating files:  94% (431/458)Updating files:  95% (436/458)Updating files:  96% (440/458)Updating files:  97% (445/458)Updating files:  98% (449/458)Updating files:  99% (454/458)Updating files: 100% (458/458)Updating files: 100% (458/458), done.
+Switched to branch 'master'
+Your branch is up to date with 'origin/master'.
+(esmvaltool2) bash-4.1$ git switch masteresmvaltool --info[K --info
+[1m[31mERROR: [0mCould not consume arg: --info
+Usage: esmvaltool <group|command>
+  available groups:      colortables | config | install | recipes
+  available commands:    run | version
+
+For detailed information on this command, run:
+  esmvaltool --help
+(esmvaltool2) bash-4.1$ esmvaltool --info[K[K[K[K[K[K[K
+[1mNAME[0m
+    esmvaltool - A community tool for routine evaluation of Earth system models.
+
+[1mSYNOPSIS[0m
+    esmvaltool [4mGROUP[0m | [4mCOMMAND[0m
+
+[1mDESCRIPTION[0m
+    The Earth System Model Evaluation Tool (ESMValTool) is a community
+    diagnostics and performance metrics tool for the evaluation of Earth
+    System Models (ESMs) that allows for routine comparison of single or
+    multiple models, either against predecessor versions or against
+    observations.
+
+    Documentation is available at https://docs.esmvaltool.org.
+
+    To report issues or ask for improvements, please visit
+    https://github.com/ESMValGroup/ESMValTool.
+
+[1mGROUPS[0m
+    [1m[4mGROUP[0m[0m is one of the following:
+
+     colortables
+       Generate colormap samples for ESMValTool's default colormaps.
+
+     config
+       Manage ESMValTool's configuration.
+
+     install
+       Install extra dependencies.
+
+     recipes
+       List, show and retrieve installed recipes.
+
+[1mCOMMANDS[0m
+    [1m[4mCOMMAND[0m[0m is one of the following:
+
+     run
+       Execute an ESMValTool recipe.
+
+     version
+       Show versions of all packages that conform ESMValTool.
+(esmvaltool2) bash-4.1$ exit
+exit
+
+Script done on Fri 19 Feb 2021 03:02:03 PM CET
