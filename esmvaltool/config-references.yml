@@ -630,7 +630,11 @@ authors:
     name: Tilmes, Simone
     institute: NCAR, US
     orcid:
-
+  pacal_aytac:
+    name: Pacal, Aytac
+    institute: DLR, Germany
+    orcid: https://orcid.org/0000-0002-1324-2389
+    
 # Note: the reference section has been replaced by the folder esmvaltool/references that contains bibtex files.
 # How to add a bibtex file to esmvaltool/references:
 #  - make a bibtex file for a reference entry. There are some online tools to convert a doi to bibtex format like https://doi2bib.org/
