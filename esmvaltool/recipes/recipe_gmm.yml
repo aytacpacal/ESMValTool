@@ -10,15 +10,20 @@ documentation:
     esmvaltool/diag_scripts/examples/my_little_diagnostic.py
 
   authors:
-    - predoi_valeriu
+    - pacal_aytac
 
   maintainer:
-    - predoi_valeriu
+    - pacal_aytac
 
 datasets:
-  - {dataset: MPI-ESM-LR, project: CMIP5, exp: historical, ensemble: r1i1p1}
-  - {dataset: NorESM1-M, project: CMIP5, exp: historical, ensemble: r1i1p1}
-
+# historical
+ - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1970,  end_year: 1999}
+# ssp585
+ - {dataset:  MPI-ESM1-2-HR,  project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2070,  end_year: 2099}
+ - {dataset:  MPI-ESM1-2-HR,  project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2070,  end_year: 2099}
+#obs 
+ - {dataset: ERA-Interim, project: OBS6, type: reanaly, version: 1, mip: day, start_year: 1980, end_year: 2010, tier: 3}
+ 
 preprocessors:
   pp:
     regrid:
