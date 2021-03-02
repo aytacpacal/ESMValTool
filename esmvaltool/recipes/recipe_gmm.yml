@@ -16,29 +16,39 @@ documentation:
     - pacal_aytac
 
 datasets:
+
 # historical
  - {dataset: MPI-ESM1-2-HR, project: CMIP6,  mip: day,  exp: historical,  ensemble: r1i1p1f1, grid: gn, start_year: 1970,  end_year: 1999}
-# ssp585
+# ssp
  - {dataset:  MPI-ESM1-2-HR,  project: CMIP6,  mip: day,  exp: ssp370,  ensemble: r1i1p1f1, grid: gn, start_year: 2070,  end_year: 2099}
  - {dataset:  MPI-ESM1-2-HR,  project: CMIP6,  mip: day,  exp: ssp585,  ensemble: r1i1p1f1, grid: gn, start_year: 2070,  end_year: 2099}
 #obs 
  - {dataset: ERA-Interim, project: OBS6, type: reanaly, version: 1, mip: day, start_year: 1980, end_year: 2010, tier: 3}
- 
+
+
+mip_definition: &mipdef
+  mip: day
+  
+
 preprocessors:
-  pp:
-    regrid:
-      target_grid: 1x1
-      scheme: linear
+  pre_extract_point:
+    mask_landsea:
+      mask_out: sea   
+    convert_units:
+      units: degC
+
 
 diagnostics:
-  simple:
-    description: "GMM Calculation"
+  variable_extraction:
+    description: variables are extracted and preprocessed
+    themes:
+      - phys
+    realms:
+      - atmos
     variables:
-      ta:
-        preprocessor: pp
-        mip: Amon
-        start_year: 2000
-        end_year: 2002
+      tasmax:
+        <<: *mipdef
+        preprocessor: pre_extract_point
     scripts:
       my_diagnostic:
         # Replace this path with the absolute path to your diagnostic (eg. /path/to/your/my_little_diagnostic.py)
