@@ -1,5 +1,17 @@
 # operating system manipulations (e.g. path constructions)
 import os
+import numpy as np
+import pandas as pd
+from sklearn.mixture import GaussianMixture
+from sklearn import metrics
+import math
+from os import getcwd, makedirs
+from os.path import exists
+from scipy import special as sps
+from datetime import datetime
+from cdo import *
+import yaml
+import traceback
 
 # to manipulate iris cubes
 import iris
@@ -9,6 +21,8 @@ import matplotlib.pyplot as plt
 from esmvaltool.diag_scripts.shared import group_metadata, run_diagnostic
 from esmvalcore.preprocessor import area_statistics
 
+cdo = Cdo()
+print(getcwd())
 
 def _plot_time_series(cfg, cube, dataset):
     """
@@ -48,15 +62,17 @@ def _plot_time_series(cfg, cube, dataset):
     # no need to brag :)
     return 'I made some plots!'
 
+
 def dict_print(d):
     for k, v in d.items():
         if isinstance(v, dict):
             print("\n\n")
-            print(k)
+            print("KEY - ", k)
             dict_print(v)
         else:
             print(k, " : ", v)
-        
+    
+    
 def chi2test(obs, exp, bin=1):
     print(int(min([min(obs), min(exp)])))
     print(int(max([max(obs), max(exp)])))
@@ -68,12 +84,14 @@ def chi2test(obs, exp, bin=1):
             sumchi += (olen-elen)**2/elen
     return sumchi
 
+
 def SelBest(arr:list, X:int)->list:
     '''
     returns the set of X configurations with shorter distance
     '''
     dx=np.argsort(arr)[:X]
     return arr[dx]
+
 
 def gmm_silohuette(dataset, c, m, p):
     n_clusters = np.arange(2, 11)
@@ -102,6 +120,7 @@ def gmm_silohuette(dataset, c, m, p):
         output_directory + '/' + c + '_GMM_silhoutte_comparison_' + m + '_' + p + '.png')
     plt.close()
     return 1
+
 
 def gmm_select(dataset, c, m, p):
     lowest_bic = np.infty
@@ -152,6 +171,7 @@ def gmm_select(dataset, c, m, p):
     plt.close()
     return [best_gmm, best_n, scores, best_init]
 
+
 def data_extract(lon, lat, ncfile):
     print(ncfile + ' start data extract')
     options = ' -remapdis,lon=' + str(lon) + '_lat=' + str(lat)
@@ -175,11 +195,15 @@ def round_down(num, divisor):
         return num - (num % divisor)
 
 
+
 def round_up(num, divisor):
     if num % divisor <= 5:
         return num + (5 - num % divisor)
     else:
         return num + (10 - num % divisor)    
+
+#def histogram_creator():
+    
 
 def run_my_diagnostic(cfg):
     """
@@ -215,15 +239,30 @@ def run_my_diagnostic(cfg):
     # keyed on datasets e.g. dict = {'MPI-ESM-LR': [var1, var2...]}
     # where var1, var2 are dicts holding all needed information per variable
     my_files_dict = group_metadata(cfg['input_data'].values(), 'dataset')
+    
+    print("start")
     print(my_files_dict)
     print("\n\n\n\n PRINT START")
     dict_print(cfg)
     print("PRINT END \n\n\n\n ")
     # iterate over key(dataset) and values(list of vars)
+    model_list = [*my_files_dict]
+    exp_list = []
+    # READ EXP NAMES FROM NESTED DICT FOR FILES
+    for key, values in my_files_dict.items():
+        if key == 'ERA-Interim':
+            continue
+        print(key)
+        print([value['exp'] for value in values])
+        print('**\n\n')
+        #exp_list.append()
+        
     for key, value in my_files_dict.items():
         # load the cube from data files only
         # using a single variable here so just grab the first (and only)
         # list element
+        
+        # use this for your code. Dict already categorized the datasets and experiments are in lists. Assign exp list element to my variables.  
         cube = iris.load_cube(value[0]['filename'])
         print(cube)
         # the first data analysis bit: simple cube difference:
