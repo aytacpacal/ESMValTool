@@ -28,15 +28,17 @@ dt_string = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # era5data = '/mnt/lustre02/work/bd1083/b309178/era5cli/out/era5_2m_temperature_1980-2010_daymax_masked.nc'
 
-# city_path = "/mnt/lustre01/pf/b/b309178/ExtremeEvents/cities2018.csv"
-# cities = pd.read_csv(city_path,
-                     # sep=',',
-                     # header=0,
-                     # dtype={'lon': np.float64, 'lat': np.float64},
-                     # encoding='cp1258')
-# cities = cities.round({'lat': 4, 'lon': 4})
-# cities = cities.loc[(cities['2018'] >= 20000000)]
-# print(cities)
+    
+city_path = "/mnt/lustre01/pf/b/b309178/ExtremeEvents/cities2018.csv"
+cities = pd.read_csv(city_path,
+                 sep=',',
+                 header=0,
+                 dtype={'lon': np.float64, 'lat': np.float64},
+                 encoding='cp1258')
+cities = cities.round({'lat': 4, 'lon': 4})
+cities = cities.loc[(cities['2018'] >= 10000000)]
+    
+print("Cities 10000000") 
 # title_font = {'fontsize': 12, 'fontweight': 'normal'}
 # label_font = {'fontsize': 12}
 
@@ -222,7 +224,8 @@ def round_up(num, divisor):
 
 #def histogram_creator():
 
-def main(cfg):
+def main(city, cfg):
+    print("Starting ")
     # assemble the data dictionary keyed by dataset name
     # this makes use of the handy group_metadata function that
     # orders the data by 'dataset'; the resulting dictionary is
@@ -234,18 +237,6 @@ def main(cfg):
     
     # READ ERA5 DATA 
     era5data = '/mnt/lustre02/work/bd1083/b309178/era5cli/out/era5_2m_temperature_1980-2010_daymax_masked.nc'
-
-    city_path = "/mnt/lustre01/pf/b/b309178/ExtremeEvents/cities2018.csv"
-    global cities
-    cities = pd.read_csv(city_path,
-                     sep=',',
-                     header=0,
-                     dtype={'lon': np.float64, 'lat': np.float64},
-                     encoding='cp1258')
-    cities = cities.round({'lat': 4, 'lon': 4})
-    cities = cities.loc[(cities['2018'] >= 10000000)]
-    
-    print("Cities 10000000")
 
     title_font = {'fontsize': 12, 'fontweight': 'normal'}
     label_font = {'fontsize': 12}
@@ -310,8 +301,8 @@ def main(cfg):
         cdo_out = {}
         # loop over city_names in dataset
         print('start cities loop\n')
-        print(cities)
-        for city_name in [item for item in cities['city'] if not pd.isna(item)]:
+        print(city)
+        for city_name in [item for item in city if not pd.isna(item)]:
     #        try:
             
             city_lon = cities.loc[(cities['city']==city_name)]['lon'].values[0]
@@ -505,24 +496,9 @@ def main(cfg):
     return 'I am done with my first ESMValTool diagnostic!'
 
     
-def multiprocessing_run(cfg):
-    global cdo
-    global dt_string
-    cdo = Cdo()
-    dt_string = datetime.now().strftime("%Y%m%d_%H%M%S")
-    print(dt_string)
-    city_path = "/mnt/lustre01/pf/b/b309178/ExtremeEvents/cities2018.csv"
-    global cities
-    cities = pd.read_csv(city_path,
-                     sep=',',
-                     header=0,
-                     dtype={'lon': np.float64, 'lat': np.float64},
-                     encoding='cp1258')
-    cities = cities.round({'lat': 4, 'lon': 4})
-    cities = cities.loc[(cities['2018'] >= 10000000)]
-    
-    print("Cities 10000000")    
-
+def multiprocessing_run(cfg):  
+    print("Start multi process func")
+    print(cities)
     pool = multiprocessing.Pool(processes = 20)
     #pool.map(test, [[item] for item in cities['city'] if not pd.isna(item)])
     pool.map(functools.partial(main, cfg=cfg), [[item] for item in cities['city'] if not pd.isna(item)])
@@ -534,4 +510,4 @@ if __name__ == '__main__':
     # nested dictionary holding all the needed information)
     with run_diagnostic() as config:
         # list here the functions that need to run
-        main(config)
+        multiprocessing_run(config)
