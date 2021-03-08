@@ -330,6 +330,8 @@ def main(city, cfg):
 
             print('start GMMs')
             # GMM ERA
+            print(city_name + " Hist past len " + str(len(hist_past)) + " Hist era len " + str(len(hist_era)) + " Hist future len " + str(len(hist_future)))
+            continue
             gmm_era = gmm_select(hist_era, c=city_name, m=model, p='era')
             #gmm_era_silohouttte = gmm_silohuette(hist_era, c=city_name, m=model, p='era')
             gmm_era_fit = gmm_era[0].fit(X=np.expand_dims(hist_era, 1))
@@ -505,10 +507,11 @@ def run_my_diagnostic(cfg):
                      dtype={'lon': np.float64, 'lat': np.float64},
                      encoding='cp1258')
     cities = cities.round({'lat': 4, 'lon': 4})
-    cities = cities.loc[(cities['2018'] >= 25000000)]
-    print("Cities 25000000")    
+    cities = cities.loc[(cities['2018'] >= 10000000)]
+    
+    print("Cities 10000000")    
 
-    pool = multiprocessing.Pool(processes = 10)
+    pool = multiprocessing.Pool(processes = 20)
     #pool.map(test, [[item] for item in cities['city'] if not pd.isna(item)])
     pool.map(functools.partial(main, cfg=cfg), [[item] for item in cities['city'] if not pd.isna(item)])
     
