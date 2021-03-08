@@ -23,7 +23,8 @@ import matplotlib.pyplot as plt
 from esmvaltool.diag_scripts.shared import group_metadata, run_diagnostic
 from esmvalcore.preprocessor import area_statistics
 
-
+cdo = Cdo()
+dt_string = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # era5data = '/mnt/lustre02/work/bd1083/b309178/era5cli/out/era5_2m_temperature_1980-2010_daymax_masked.nc'
 
@@ -221,9 +222,7 @@ def round_up(num, divisor):
 
 #def histogram_creator():
 
-def main(city, cfg):
-    print("Starting " + city[0])
-    print(multiprocessing.current_process())
+def main(cfg):
     # assemble the data dictionary keyed by dataset name
     # this makes use of the handy group_metadata function that
     # orders the data by 'dataset'; the resulting dictionary is
@@ -236,6 +235,17 @@ def main(city, cfg):
     # READ ERA5 DATA 
     era5data = '/mnt/lustre02/work/bd1083/b309178/era5cli/out/era5_2m_temperature_1980-2010_daymax_masked.nc'
 
+    city_path = "/mnt/lustre01/pf/b/b309178/ExtremeEvents/cities2018.csv"
+    global cities
+    cities = pd.read_csv(city_path,
+                     sep=',',
+                     header=0,
+                     dtype={'lon': np.float64, 'lat': np.float64},
+                     encoding='cp1258')
+    cities = cities.round({'lat': 4, 'lon': 4})
+    cities = cities.loc[(cities['2018'] >= 10000000)]
+    
+    print("Cities 10000000")
 
     title_font = {'fontsize': 12, 'fontweight': 'normal'}
     label_font = {'fontsize': 12}
@@ -256,7 +266,7 @@ def main(city, cfg):
         # SEARCH FOR DIFFERENT PERIODS OF THE SAME MODEL
         matches = [match for match in holder if model in match]
         matches.extend([era5data])
-        print('Assign models to dict ' + city[0])
+        print('Assign models to dict ')
         # ASSIGN EACH FILE TO DICT KEYS. LEN(MATCHES) must be 4, i.e. era5, historical, ssp370 and ssp585.
         if len(matches) == 4:
             for item in matches:
@@ -300,8 +310,10 @@ def main(city, cfg):
         cdo_out = {}
         # loop over city_names in dataset
         print('start cities loop\n')
-        for city_name in [item for item in city if not pd.isna(item)]:
+        print(cities)
+        for city_name in [item for item in cities['city'] if not pd.isna(item)]:
     #        try:
+            
             city_lon = cities.loc[(cities['city']==city_name)]['lon'].values[0]
             city_lat = cities.loc[(cities['city']==city_name)]['lat'].values[0]
             print(city_name + ' start data extract')
@@ -327,11 +339,11 @@ def main(city, cfg):
             hist_past = cdo_out['past']['value']
             hist_future = cdo_out['future585']['value']
             hist_era = cdo_out['era']['value']
-
+            print(city_name + " Hist past len " + str(len(hist_past)) + " Hist era len " + str(len(hist_era)) + " Hist future len " + str(len(hist_future)))
+                        
             print('start GMMs')
             # GMM ERA
-            print(city_name + " Hist past len " + str(len(hist_past)) + " Hist era len " + str(len(hist_era)) + " Hist future len " + str(len(hist_future)))
-            continue
+         
             gmm_era = gmm_select(hist_era, c=city_name, m=model, p='era')
             #gmm_era_silohouttte = gmm_silohuette(hist_era, c=city_name, m=model, p='era')
             gmm_era_fit = gmm_era[0].fit(X=np.expand_dims(hist_era, 1))
@@ -493,7 +505,7 @@ def main(city, cfg):
     return 'I am done with my first ESMValTool diagnostic!'
 
     
-def run_my_diagnostic(cfg):
+def multiprocessing_run(cfg):
     global cdo
     global dt_string
     cdo = Cdo()
@@ -522,4 +534,4 @@ if __name__ == '__main__':
     # nested dictionary holding all the needed information)
     with run_diagnostic() as config:
         # list here the functions that need to run
-        run_my_diagnostic(config)
+        main(config)
